@@ -18,15 +18,15 @@ public class Main{
         //real system this would come from a database look up at login time
         long demoTrackingNum = 650849722292L;
         Parcel studentParcel = new Parcel(demoTrackingNum, "Fathini", "jane@student.uitm.edu.my", "0123456789", "Block Sutera, Bilik 230", "2026-06-20", "Registered");
-        Student student = new Student("Fathini", "S001", "jane@student.edu", 123456789,
-                "Block A, Room 12", "2025801536", 1001, studentParcel, 0);
-        parcelCentre.addParcel(studentParcel, "Parcel with tracking number 1001 has been added to the system.");
+        Student student = new Student("Fathini", "S001", "2025801536@student.edu.my", 123456789,
+                "Block A, Room 230", "2025801536",demoTrackingNum , studentParcel, 0);
+        parcelCentre.addParcel(studentParcel, "Parcel with tracking number" + demoTrackingNum + "has been added to the system.");
 
         System.out.println("Please log in to the system.");
         System.out.print("Enter username: ");
         String username = in.nextLine();
         System.out.print("Enter password: ");
-        String password = in.nextLine();
+        String password = in.nextLine(); 
 
         if (username.equals("admin") && password.equals("password")){
             System.out.println("Login successful! Welcome, " + username + ".");
@@ -57,7 +57,6 @@ public class Main{
             int choice = in.nextInt();
             in.nextLine();
 
-            int count = 0; 
 
             switch(choice){
                 case 1: 
@@ -99,34 +98,41 @@ public class Main{
     private static void registerParcels(Scanner in, ParcelCentre parcelCentre){
         System.out.println("Would you like to register a new parcel? (yes/no)");
         String response = in.nextLine();
-        while(response.equalsIgnoreCase("yes")){
-            if(response.equalsIgnoreCase("yes")){
-                                
-                System.out.println("Enter tracking number: ");
-                String trackingNum = in.nextLine();
 
-                System.out.println("Enter recipient name: ");
-                String recipientName = in.nextLine();
+        while(response.equalsIgnoreCase("yes")){
                                 
-                System.out.println("Enter recipient email: ");
-                String recipientEmail = in.nextLine();
-                                
-                System.out.println("Enter recipient phone: ");
-                String recipientPhone = in.nextLine();
-                                
-                System.out.println("Enter delivery address: ");
-                String deliveryAddress = in.nextLine();
-                                
-                System.out.println("Enter delivery date: ");
-                String deliveryDate = in.nextLine();
-                                
-                String status = "Registered";
-                                
-                Parcel newParcel = parcelCentre.registerParcel(trackingNum, recipientName, recipientEmail, recipientPhone, deliveryAddress, deliveryDate, status);
-                parcelCentre.addParcel(newParcel, "Parcel with tracking number " + trackingNum + " has been added to the system.");
-                                
-                System.out.println("Parcel registered successfully.");
+            System.out.println("Enter tracking number (12 digits): ");
+            long trackingNum = in.nextLong();
+            in.nextLine();
+
+            if(!isValidTrackingNum(trackingNum)){
+                System.out.println("Tracking number must be 12 digits only. Parcel not registered.");
+                System.out.println("Would you like to register another parcel? (yes/no)");
+                response = in.nextLine();
+                continue;
             }
+
+            System.out.println("Enter recipient name: ");
+            String recipientName = in.nextLine();
+                                
+            System.out.println("Enter recipient email: ");
+            String recipientEmail = in.nextLine();
+                                
+            System.out.println("Enter recipient phone: ");
+            String recipientPhone = in.nextLine();
+                                
+            System.out.println("Enter delivery address: ");
+            String deliveryAddress = in.nextLine();
+                                
+            System.out.println("Enter delivery date: ");
+            String deliveryDate = in.nextLine();
+                                
+            String status = "Registered";
+                                
+            Parcel newParcel = parcelCentre.registerParcel(trackingNum, recipientName, recipientEmail, recipientPhone, deliveryAddress, deliveryDate, status);
+            parcelCentre.addParcel(newParcel, "Parcel with tracking number " + trackingNum + " has been added to the system.");
+                                
+            System.out.println("Parcel registered successfully.");
                             
             System.out.println("Would you like to register another parcel? (yes/no)");
             response = in.nextLine();
@@ -139,7 +145,7 @@ public class Main{
             System.out.println("No parcel registered yet.");
             return;
         }
-        for (Parcel parcel: parcelCentre.getAllParcels()){
+        for(Parcel parcel: parcelCentre.getAllParcels()){
             System.out.println(parcel.getParcelDetails());
             System.out.println("---");
         }
@@ -148,41 +154,41 @@ public class Main{
     //for case 3 updating status of parcel
     private static void updateParcelStatus(Scanner in, ParcelCentre parcelCentre){
         System.out.print("Enter tracking number to update: ");
-        int trackingNum = in.nextInt();
+        long trackingNum = in.nextLong();
         in.nextLine();
  
         System.out.print("Enter new status: ");
         String newStatus = in.nextLine();
  
-        if (parcelCentre.updateParcelStatusByTracking(trackingNum, newStatus)){
+        if(parcelCentre.updateParcelStatusByTracking(trackingNum, newStatus)){
             System.out.println("Parcel status updated successfully.");
-        } else {
+        }else{
             System.out.println("No parcel found with that tracking number.");
         }
     }
 
     //for case 4 removing parcel from the hub
-    private static void deleteParcel(Scanner in, ParcelCentre parcelCentre) {
+    private static void deleteParcel(Scanner in, ParcelCentre parcelCentre){
         System.out.print("Enter tracking number to be deleted: ");
-        int trackingNum = in.nextInt();
+        long trackingNum = in.nextLong();
         in.nextLine();
  
         Parcel removed = parcelCentre.removeParcelByTracking(trackingNum);
-        if (removed != null) {
+        if(removed != null) {
             System.out.println("Parcel " + trackingNum + " was deleted.");
-        } else {
+        }else{
             System.out.println("No parcel found with that tracking number.");
         }
     }
 
     //case 5 allows admin to update status of the parcel
-    private static void sendNotification(Scanner in, ParcelCentre parcelCentre) {
+    private static void sendNotification(Scanner in, ParcelCentre parcelCentre){
         System.out.print("Enter tracking number of the parcel: ");
-        int trackingNum = in.nextInt();
+        long trackingNum = in.nextLong();
         in.nextLine();
  
         Parcel parcel = parcelCentre.findParcelByTracking(trackingNum);
-        if (parcel == null) {
+        if(parcel == null){
             System.out.println("No parcel found with that tracking number.");
             return;
         }
@@ -194,7 +200,7 @@ public class Main{
     }
 
     //case 6, admin able to assign a staff to the hub
-    private static void assignStaff(Scanner in, ParcelCentre parcelCentre) {
+    private static void assignStaff(Scanner in, ParcelCentre parcelCentre){
         System.out.print("Enter staff name to assign to this centre: ");
         String staffName = in.nextLine();
         parcelCentre.assignStaff(staffName);
@@ -202,7 +208,7 @@ public class Main{
     }
 
     //case 7 registering new staff into the admin
-    private static void registerNewAdmin(Scanner in) {
+    private static void registerNewAdmin(Scanner in){
         System.out.print("Enter name: ");
         String name = in.nextLine();
  
@@ -223,15 +229,15 @@ public class Main{
     }
 
     //if none of the admins password runs, then student gets to use it
-    private static void runStudentFlow(Scanner in, Student student) {
+    private static void runStudentFlow(Scanner in, Student student){
         System.out.print("Enter matric number: ");
         String matricNum = in.nextLine();
  
         System.out.print("Enter tracking number: ");
-        int trackingNum = in.nextInt();
-        in.nextLine(); // consume the newline left by nextInt()
+        long trackingNum = in.nextLong();
+        in.nextLine(); //consume the newline left by nextInt()
  
-        if (!matricNum.equals(student.getMatricNum())) {
+        if(!matricNum.equals(student.getMatricNum())){
             System.out.println("Matric number not recognized.");
             return;
         }
@@ -239,19 +245,24 @@ public class Main{
         String status = student.getTrackingParcel(trackingNum);
         System.out.println("Status: " + status);
  
-        if (!status.equals("Ready to pick up")) {
+        if(!status.equals("Ready to pick up")){
             return;
         }
  
         System.out.print("Enter OTP for verification: ");
         int otp = in.nextInt();
  
-        if (student.verifyOTP(otp)) {
+        if(student.verifyOTP(otp)){
             System.out.println("OTP verified successfully.");
             System.out.println("Package claimed successfully.");
             student.claimPackage(otp);
-        } else {
+        }else{
             System.out.println("Invalid OTP. Please try again.");
         }
+    }
+
+    //tracking number 12 digits only with help of claude
+    private static boolean isValidTrackingNum(long trackingNum){
+        return trackingNum >= 100_000_000_000L && trackingNum <= 999_999_999_999L;
     }
 }

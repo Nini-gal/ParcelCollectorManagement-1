@@ -85,6 +85,12 @@ public class Parcel{
 
     //method to get parcel details
     public String getParcelDetails(){
-        return "Parcel Status: " + status + "\nTracking Number: " + trackingNum + "\nRecipient Name: " + recipientName + "\nRecipient Email: " + recipientEmail + "\nRecipient Phone: " + recipientPhone + "\nDelivery Address: " + deliveryAddress + "\nDelivery Date: " + deliveryDate;
+        return "Parcel Status: " + status + 
+            "\nTracking Number: " + trackingNum + 
+            "\nRecipient Name: " + recipientName + 
+            "\nRecipient Email: " + recipientEmail + 
+            "\nRecipient Phone: " + recipientPhone + 
+            "\nDelivery Address: " + deliveryAddress + 
+            "\nDelivery Date: " + deliveryDate;
     }
 }

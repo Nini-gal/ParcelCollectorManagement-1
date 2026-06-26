@@ -14,7 +14,7 @@ public class ParcelCentre{
         this.centreName = centreName;
         this.activeUser = activeUser;
         this.message = message;
-        // Initialize the parcel database as an empty list
+        //Initialize the parcel database as an empty list
         this.parcelDatabase = new ArrayList<>();
     }
 
@@ -65,7 +65,6 @@ public class ParcelCentre{
     //method to add parcel based on the details provided by the admin
     public void addParcel(Parcel parcel, String message){
         this.message = message;
-        message = "Parcel with tracking number " + parcel.getTrackingNum() + " has been added to the system.";
         //add parcel to the database
         parcelDatabase.add(parcel);
     }

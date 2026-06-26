@@ -59,6 +59,9 @@ public class User{
 
     //method to get full profile details similar toString
     public String getProfileDetails(){
-        return "\nName: " + name + "\nId: " + id + "\nEmail: " + email + "\nNumber Phone: " + numPhone;
+        return "\nName: " + name + 
+            "\nId: " + id + 
+            "\nEmail: " + email + 
+            "\nNumber Phone: " + numPhone;
     }
 }

@@ -45,19 +45,17 @@ public class Admin extends User{
     //method to register new admin and return a created object
     public static Admin registerAdmin(String name, String id, String email, String role, String password){
         //adding new admin, save into database or data structure
-        Admin newAdmin = new Admin(name, id, email, role, password);
-        return newAdmin;
+        return new Admin(name, id, email, role, password);
     }
 
     //method to register new parcel to the system
-    public Parcel registerParcel(int trackingNum, String recipientName, String recipientEmail, String recipientPhone, String deliveryAddress, String deliveryDate, String status){
+    public Parcel registerParcel(long trackingNum, String recipientName, String recipientEmail, String recipientPhone, String deliveryAddress, String deliveryDate, String status){
         //adding new parcel, save into database or data structure
-        Parcel newParcel = new Parcel(trackingNum, recipientName, recipientEmail, recipientPhone, deliveryAddress, deliveryDate, status);
-        return newParcel;
+        return new Parcel(trackingNum, recipientName, recipientEmail, recipientPhone, deliveryAddress, deliveryDate, status);
     }
 
     //method to update parcel status
     public void updateParcelStatus(Parcel parcel, String status){
-        parcel.setStatus("Arrived");
+        parcel.setStatus(status);
     }
 }
