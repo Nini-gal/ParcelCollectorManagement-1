@@ -1,7 +1,6 @@
 package com.example.parcel;
 
 import java.util.Scanner;
-
 import com.example.parcel.model.Admin;
 import com.example.parcel.model.Parcel;
 import com.example.parcel.model.ParcelCentre;
@@ -161,6 +160,7 @@ public class Main{
         }
     }
 
+    //for case 4 removing parcel from the hub
     private static void deleteParcel(Scanner in, ParcelCentre parcelCentre) {
         System.out.print("Enter tracking number to be deleted: ");
         int trackingNum = in.nextInt();
@@ -173,7 +173,8 @@ public class Main{
             System.out.println("No parcel found with that tracking number.");
         }
     }
- 
+
+    //case 5 allows admin to update status of the parcel
     private static void sendNotification(Scanner in, ParcelCentre parcelCentre) {
         System.out.print("Enter tracking number of the parcel: ");
         int trackingNum = in.nextInt();
@@ -190,14 +191,16 @@ public class Main{
  
         parcelCentre.sendNotification(parcel.getRecipientEmail(), message);
     }
- 
+
+    //case 6, admin able to assign a staff to the hub
     private static void assignStaff(Scanner in, ParcelCentre parcelCentre) {
         System.out.print("Enter staff name to assign to this centre: ");
         String staffName = in.nextLine();
         parcelCentre.assignStaff(staffName);
         System.out.println(staffName + " has been assigned to " + parcelCentre.getCentreName() + ".");
     }
- 
+
+    //case 7 registering new staff into the admin
     private static void registerNewAdmin(Scanner in) {
         System.out.print("Enter name: ");
         String name = in.nextLine();
@@ -217,7 +220,8 @@ public class Main{
         Admin newAdmin = Admin.registerAdmin(name, id, email, role, password);
         System.out.println("Admin registered successfully: " + newAdmin.getName());
     }
- 
+
+    //if none of the admins password runs, then student gets to use it
     private static void runStudentFlow(Scanner in, Student student) {
         System.out.print("Enter matric number: ");
         String matricNum = in.nextLine();
