@@ -32,24 +32,18 @@ ParcelCollectorManagement
 ```
 ## Class responsibilities
 
-File                | Responsibility
-Main.java             Entry point. Logs the user in, then routes to either the 
-                      admin menu or the student flow.
+File           | Responsibility
+- **Main.java**:Entry point. Logs the user in, then routes to either the admin menu or the student flow.
 
-User.java             Base class with shared fields (name, id, email, phone) used 
-                      by both Admin and Student.
+- **User.java**: Base class with shared fields (name, id, email, phone) used by both Admin and Student.
 
-Admin.java            Extends User. Holds admin role/password and admin-only 
-                      actions like registering parcels and other admins.
+- **Admin.java**: Extends User. Holds admin role/password and admin-only actions like registering parcels and other admins.
 
-Student.java          Extends User. Holds the student's linked Parcel, matric 
-                      number, and OTP logic for claiming a package.
+- **Student.java**: Extends User. Holds the student's linked Parcel, matric number, and OTP logic for claiming a package.
 
-Parcel.java           A single parcel record: tracking number, recipient 
-                      details, delivery info, and status.
+- **Parcel.java**: A single parcel record: tracking number, recipient details, delivery info, and status.
 
-ParcelCentre.java     Acts as the in-memory "database" for the centre — stores 
-                      all parcels and provides lookup/update/remove operations.
+- **ParcelCentre.java**: Acts as the in-memory "database" for the centre — stores all parcels and provides lookup/update/remove operations.
 
 There is no real database — all data lives in memory for the duration of one run, aside from one demo student + parcel seeded directly in main (see Demo accounts below).
 
@@ -108,7 +102,8 @@ Unit tests for the User class are located in `src/test/java/com/example/parcel/m
 mvn test
 ```
 ## Known limitations
--All data is in-memory only — nothing is saved between runs, aside from the one hardcoded demo student/parcel.
+-All data is in-memory only 
+-Nothing is saved between runs, aside from the one hardcoded demo student/parcel.
 -Admin login is a hardcoded check (admin / password) rather than a real authentication system.
 -There's no persistence layer (database or file storage) yet
 
