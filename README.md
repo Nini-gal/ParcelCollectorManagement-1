@@ -33,7 +33,7 @@ ParcelCollectorManagement
 ## Class responsibilities
 
 File           | Responsibility
-- **Main.java**:Entry point. Logs the user in, then routes to either the admin menu or the student flow.
+- **Main.java**: Entry point. Logs the user in, then routes to either the admin menu or the student flow.
 
 - **User.java**: Base class with shared fields (name, id, email, phone) used by both Admin and Student.
 
