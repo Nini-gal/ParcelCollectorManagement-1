@@ -16,7 +16,8 @@ public class Main{
 
         //demo student account with a parcel already linked to it
         //real system this would come from a database look up at login time
-        Parcel studentParcel = new Parcel(650849722292L, "Fathini", "jane@student.uitm.edu.my", "0123456789", "Block Sutera, Bilik 230", "2026-06-20", "Registered");
+        long demoTrackingNum = 650849722292L;
+        Parcel studentParcel = new Parcel(demoTrackingNum, "Fathini", "jane@student.uitm.edu.my", "0123456789", "Block Sutera, Bilik 230", "2026-06-20", "Registered");
         Student student = new Student("Fathini", "S001", "jane@student.edu", 123456789,
                 "Block A, Room 12", "2025801536", 1001, studentParcel, 0);
         parcelCentre.addParcel(studentParcel, "Parcel with tracking number 1001 has been added to the system.");
