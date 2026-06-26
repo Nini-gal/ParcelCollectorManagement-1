@@ -1,11 +1,11 @@
 package com.example.parcel;
 
+import java.util.Scanner;
+
 import com.example.parcel.model.Admin;
 import com.example.parcel.model.Parcel;
 import com.example.parcel.model.ParcelCentre;
 import com.example.parcel.model.Student;
-
-import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
@@ -16,7 +16,7 @@ public class Main{
 
         //demo student account with a parcel already linked to it
         //real system this would come from a database look up at login time
-        long demoTrackingNum = 650849722292L;
+        long demoTrackingNum = 680078088310212L;
         Parcel studentParcel = new Parcel(demoTrackingNum, "Fathini", "jane@student.uitm.edu.my", "0123456789", "Block Sutera, Bilik 230", "2026-06-20", "Registered");
         Student student = new Student("Fathini", "S001", "2025801536@student.edu.my", 123456789,
                 "Block A, Room 230", "2025801536",demoTrackingNum , studentParcel, 0);
@@ -101,12 +101,12 @@ public class Main{
 
         while(response.equalsIgnoreCase("yes")){
                                 
-            System.out.println("Enter tracking number (12 digits): ");
+            System.out.println("Enter tracking number (15 digits): ");
             long trackingNum = in.nextLong();
             in.nextLine();
 
             if(!isValidTrackingNum(trackingNum)){
-                System.out.println("Tracking number must be 12 digits only. Parcel not registered.");
+                System.out.println("Tracking number must be 15 digits only. Parcel not registered.");
                 System.out.println("Would you like to register another parcel? (yes/no)");
                 response = in.nextLine();
                 continue;
@@ -261,8 +261,8 @@ public class Main{
         }
     }
 
-    //tracking number 12 digits only with help of claude
+    //tracking number 15 digits only with help of claude
     private static boolean isValidTrackingNum(long trackingNum){
-        return trackingNum >= 100_000_000_000L && trackingNum <= 999_999_999_999L;
+        return trackingNum >= 100_000_000_000_000L && trackingNum <= 999_999_999_999_999L;
     }
 }
