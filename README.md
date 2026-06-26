@@ -16,6 +16,8 @@ ParcelCollectorManagement
 │   │                   │   ├── User.java
 │   │                   │   ├── Admin.java
 │   │                   │   └── Student.java
+|   |                   |   └── Parcel.java
+|   |                   |   └── ParcelCentre.java
 │   │                   └── Main.java
 │   └── test
 │       └── java
