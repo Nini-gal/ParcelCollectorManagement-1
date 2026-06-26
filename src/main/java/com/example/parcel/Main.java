@@ -1,11 +1,11 @@
 package com.example.parcel;
 
-import java.util.Scanner;
 import com.example.parcel.model.Admin;
 import com.example.parcel.model.Parcel;
 import com.example.parcel.model.ParcelCentre;
 import com.example.parcel.model.Student;
 
+import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
