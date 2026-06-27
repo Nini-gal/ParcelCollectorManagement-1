@@ -96,11 +96,6 @@ Tracking numbers are exactly 15 digits (e.g. 225347071883677), stored as long. N
 
 - **Student Users**: Logging in with any other username/password falls through to the student flow, where you'll be asked for your matric number and tracking number, then an OTP to claim your package
 
-## Testing
-Unit tests for the User class are located in `src/test/java/com/example/parcel/model/UserTest.java`. To run the tests, use:
-```bash
-mvn test
-```
 ## Known limitations
 - All data is in-memory only 
 - Nothing is saved between runs, aside from the one hardcoded demo student/parcel.
