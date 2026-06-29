@@ -6,10 +6,12 @@ import com.example.parcel.model.Admin;
 import com.example.parcel.model.Parcel;
 import com.example.parcel.model.ParcelCentre;
 import com.example.parcel.model.Student;
+
 public class Main{
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to the Parcel Collector Management System!");
+        int count = 0;
 
         //central registry of parcels for camous centre
         ParcelCentre parcelCentre = new ParcelCentre("UITM Kuala Terengganu Parcel Centre", "Admin", "No new messages");
@@ -232,15 +234,18 @@ public class Main{
     private static void runStudentFlow(Scanner in, Student student){
         System.out.print("Enter matric number: ");
         String matricNum = in.nextLine();
- 
-        System.out.print("Enter tracking number: ");
-        long trackingNum = in.nextLong();
-        in.nextLine(); //consume the newline left by nextInt()
- 
+
         if(!matricNum.equals(student.getMatricNum())){
             System.out.println("Matric number not recognized.");
             return;
         }
+
+        while(matricNum){
+            
+        }
+        System.out.print("Enter tracking number: ");
+        long trackingNum = in.nextLong();
+        in.nextLine(); //consume the newline left by nextInt()
  
         String status = student.getTrackingParcel(trackingNum);
         System.out.println("Status: " + status);

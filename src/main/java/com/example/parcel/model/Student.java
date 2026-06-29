@@ -1,10 +1,16 @@
 package com.example.parcel.model;
 
+import java.util.ArrayList;
+import java.util.List;
 public class Student extends User{
+    //update, max parcel perpickup are 10 logically
+    public static final int MAX_PARCEL_PER_PICKUP = 10;
+    //charges student rm2 each parcel
+    public static final double CHARGE_PER_PARCEL = 2.0;
     private String campusAddress;
     private String matricNum;
     private long trackingNum;
-    private final Parcel parcel;
+    private final List<Parcel> parcels;
     private int currentOTP;
 
     //Constructor
@@ -13,8 +19,11 @@ public class Student extends User{
         this.campusAddress = campusAddress;
         this.matricNum = matricNum;
         this.trackingNum = trackingNum;
-        this.parcel = parcel;
         this.currentOTP = currentOTP;
+        this.parcels = new ArrayList<>();
+        if(parcel != null){
+            this.parcels.add(parcel);
+        }
     }
 
     //Getters
@@ -33,9 +42,10 @@ public class Student extends User{
     public int getCurrentOTP(){
         return currentOTP;
     }
-    
-    public Parcel getParcel(){
-        return parcel;
+
+    //student class gets to hold parcels
+    public List<Parcel> getParcel(){
+        return parcels;
     }
 
     // Setters
