@@ -1,5 +1,11 @@
 package com.example.parcel;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.example.parcel.model.Admin;
@@ -19,7 +25,7 @@ public class Main{
         //demo student account with a parcel already linked to it
         //real system this would come from a database look up at login time
         long demoTrackingNum = 680078088310212L;
-        Parcel studentParcel = new Parcel(demoTrackingNum, "Fathini", "jane@student.uitm.edu.my", "0123456789", "Block Sutera, Bilik 230", "2026-06-20", "Registered");
+        Parcel studentParcel = new Parcel(demoTrackingNum, "Fathini", "2025801536@student.uitm.edu.my", "0123456789", "Block Sutera, Bilik 230", "2026-06-20", "Registered");
         Student student = new Student("Fathini", "S001", "2025801536@student.edu.my", 123456789,
                 "Block A, Room 230", "2025801536",demoTrackingNum , studentParcel, 0);
         parcelCentre.addParcel(studentParcel, "Parcel with tracking number" + demoTrackingNum + "has been added to the system.");
@@ -107,6 +113,7 @@ public class Main{
             long trackingNum = in.nextLong();
             in.nextLine();
 
+            //validation to ensure the tracking number only insist 15 digits only
             if(!isValidTrackingNum(trackingNum)){
                 System.out.println("Tracking number must be 15 digits only. Parcel not registered.");
                 System.out.println("Would you like to register another parcel? (yes/no)");
@@ -231,7 +238,7 @@ public class Main{
     }
 
     //if none of the admins password runs, then student gets to use it
-    private static void runStudentFlow(Scanner in, Student student){
+    private static void runStudentFlow(Scanner in, Student student, ParcelCentre parcelCentre){
         System.out.print("Enter matric number: ");
         String matricNum = in.nextLine();
 
@@ -240,29 +247,130 @@ public class Main{
             return;
         }
 
-        while(matricNum){
-            
+        //student's otp generated
+        int otp = student.generateOTP();
+        System.out.println("Your OTP is : " + otp);
+
+        //to get the list of parcels form of array
+        List<Parcel> parcelsToClaim = new ArrayList<>();
+
+        System.out.println("Enter tracking number to collect, once every visit.");
+        System.out.println("Enter 'done' when finished (max " + Student.MAX_PARCELS_PER_PICKUP + " parcels per visit).");
+
+        while(parcelsToClaim.size() < Student.MAX_PARCELS_PER_PICKUP){
+            System.out.print("Enter tracking number (or 'done'): ");
+            String input = in.nextLine().trim();
+
+            if(input.equalsIgnoreCase("done")){
+                break;
+            }
+
+            long trackingNum;
+
+            //ensure the tracking number entered are valid in 15 digit format or not
+            try{
+                trackingNum = Long.parseLong(input);
+            }catch(NumberFormatException e){
+                System.out.println("Invalid tracking number entered. Please try again.");
+                continue;
+            }
+
+            //find the tracking number in parcel centre 
+            Parcel parcel = parcelCentre.findParcelByTracking(trackingNum);
+            if(parcel == null){
+                System.out.println("Not parcel found.");
+                continue;
+            }
+
+            //to tell the student whether the parcel already claimed yet or not
+            if(parcel.getStatus().equalsIgnoreCase("Claimed")){
+                System.out.println("The parcel already claimed.");
+                continue;
+            }
+
+            //to ensure no collision of same parcel over and over again
+            if(parcelsToClaim.contains(parcel)){
+                System.out.println("The parcel already added to the hub.");
+                continue;
+            }
+
+            parcelsToClaim.add(parcel);
+            System.out.println("Parcel added. (" + parcelsToClaim.add(parcel) + " / " + Student.MAX_PARCELS_PER_PICKUP + ")");
         }
-        System.out.print("Enter tracking number: ");
-        long trackingNum = in.nextLong();
-        in.nextLine(); //consume the newline left by nextInt()
- 
-        String status = student.getTrackingParcel(trackingNum);
-        System.out.println("Status: " + status);
- 
-        if(!status.equals("Ready to pick up")){
+
+        //what if the parcel to be claimed empty?
+        //we need to send message
+        if(parcelsToClaim.isEmpty()){
+            System.out.println("No parcel to be claimed.");
             return;
         }
- 
+
+        //what if the parcels reached limit?, display
+        if(parcelsToClaim.size() == Student.MAX_PARCELS_PER_PICKUP){
+            System.out.println("Number of parcels reached the maximum of " + Student.MAX_PARCELS_PER_PICKUP + " parcels for the visit.");
+
+        }
+
         System.out.print("Enter OTP for verification: ");
-        int otp = in.nextInt();
+        int enteredOTP = in.nextInt();
+        in.nextLine();
  
-        if(student.verifyOTP(otp)){
-            System.out.println("OTP verified successfully.");
-            System.out.println("Package claimed successfully.");
-            student.claimPackage(otp);
-        }else{
+        if(!student.verifyOTP(enteredOTP)){
             System.out.println("Invalid OTP. Please try again.");
+            return;
+        }
+
+        //to count how much the student need to pay based on the quantity of the parcel thats been collected
+        double totalCost = parcelCentre.claimParcels(parcelsToClaim);
+        System.out.println("OTP verified successfully.");
+
+        System.out.println(parcelsToClaim.size() + " parcel(s) claimed successfully.");
+        System.out.printf("Total cost: RM%.2f ", totalCost);
+
+        //creating receipt to record the parcel's collected
+        String receipt = buildReceipt(student, parcelsToClaim, totalCost);
+        System.out.println();
+        System.out.println(receipt);
+        saveReceiptToFile(student, receipt);
+
+    }
+
+    //build a format of receipt listing only student, every parcel claimed
+    private static String buildReceipt(Student student, List<Parcel> parcelsToClaimed, double totalCost){
+        StringBuilder sb = new StringBuilder();
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+ 
+        sb.append("===== PARCEL PICKUP RECEIPT =====\n");
+        sb.append("Date/Time: ").append(timestamp).append("\n");
+        sb.append("Collected by: ").append(student.getName()).append("\n");
+        sb.append("Matric Number: ").append(student.getMatricNum()).append("\n");
+        sb.append("----------------------------------\n");
+ 
+        int i = 1;
+        for (Parcel parcel : parcelsClaimed) {
+            sb.append("Parcel ").append(i).append(":\n");
+            sb.append(parcel.getParcelDetails()).append("\n");
+            sb.append("----------------------------------\n");
+            i++;
+        }
+ 
+        sb.append("Total parcels collected: ").append(parcelsClaimed.size()).append("\n");
+        sb.append(String.format("Total cost: RM%.2f (RM%.2f x %d parcel(s))%n",
+                totalCost, Student.CHARGE_PER_PARCEL, parcelsClaimed.size()));
+        sb.append("==================================");
+ 
+        return sb.toString();
+    }
+
+    private static void saveReceiptToFile(Student student, String receipt){
+        String timestampForFile = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String fileName = "receipt_" + student.getMatricNum() + "_" + timestampForFile + ".txt";
+ 
+        try(FileWriter writer = new FileWriter(fileName)){
+            writer.write(receipt);
+            System.out.println("\nReceipt saved to: " + fileName);
+        }catch (IOException e){
+            System.out.println("\nCould not save receipt to file: " + e.getMessage());
         }
     }
 

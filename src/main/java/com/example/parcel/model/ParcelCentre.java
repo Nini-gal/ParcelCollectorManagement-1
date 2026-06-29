@@ -108,4 +108,15 @@ public class ParcelCentre{
         }
         return null;
     }
+
+    //method to ensure the parcel in claimed status
+    public double claimParcels(List<Parcel> parcelsToClaim){
+        if(parcelsToClaim == null || parcelsToClaim.isEmpty()){
+            return 0.0;
+        }
+        for(Parcel parcel : parcelsToClaim){
+            parcel.setStatus("Claimed");
+        }
+        return parcelsToClaim.size() * Student.CHARGE_PER_PARCEL;
+    }
 }
