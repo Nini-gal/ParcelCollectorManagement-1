@@ -20,7 +20,6 @@ public class Main{
 
         //central registry of parcels for camous centre
         ParcelCentre parcelCentre = new ParcelCentre("UITM Kuala Terengganu Parcel Centre", "Admin", "No new messages");
-
         //demo student account with a parcel already linked to it
         //real system this would come from a database look up at login time
         long demoTrackingNum = 680078088310212L;
@@ -219,7 +218,7 @@ public class Main{
         System.out.print("Enter matric number: ");
         String matricNum = in.nextLine();
 
-        
+
         if(!matricNum.equals(student.getMatricNum())){
             System.out.println("Matric number not recognized.");
             return;

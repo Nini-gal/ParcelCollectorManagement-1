@@ -34,12 +34,8 @@ public class Admin extends User{
     }
 
     //method to authenticate admin login
-    public boolean login(String username, String passwor){
-        if (getEmail().equals(username) && getPassword().equals(password)){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean login(String username, String passwordAttempt){
+        return getID().equals(username) && getPassword().equals(passwordAttempt);
     }
 
     //method to register new parcel to the system
