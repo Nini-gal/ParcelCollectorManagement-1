@@ -37,7 +37,7 @@ File           | Responsibility
 
 - **User.java**: Base class with shared fields (name, id, email, phone) used by both Admin and Student.
 
-- **Admin.java**: Extends User. Holds admin role/password and admin-only actions like registering parcels and other admins.
+- **Admin.java**: Extends User. Holds admin role/password and admin-only actions like registering parcels.
 
 - **Student.java**: Extends User. Holds the student's linked Parcel, matric number, and OTP logic for claiming a package.
 
@@ -90,9 +90,7 @@ Tracking numbers are exactly 15 digits (e.g. 225347071883677), stored as long. N
    3. Update parcel status
    4. Delete parcel
    5. Send notification to student
-   6. Assign staff to parcel centre
-   7. Register new admin
-   8. Exit
+   6. Exit
 
 - **Student Users**: Logging in with any other username/password falls through to the student flow, where you'll be asked for your matric number and tracking number, then an OTP to claim your package
 
