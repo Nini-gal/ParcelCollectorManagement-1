@@ -42,12 +42,6 @@ public class Admin extends User{
         }
     }
 
-    //method to register new admin and return a created object
-    public static Admin registerAdmin(String name, String id, String email, String role, String password){
-        //adding new admin, save into database or data structure
-        return new Admin(name, id, email, role, password);
-    }
-
     //method to register new parcel to the system
     public Parcel registerParcel(long trackingNum, String recipientName, String recipientEmail, String recipientPhone, String deliveryAddress, String deliveryDate, String status){
         //adding new parcel, save into database or data structure

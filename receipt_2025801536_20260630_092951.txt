@@ -1,0 +1,17 @@
+===== PARCEL PICKUP RECEIPT =====
+Date/Time: 30/06/2026 09:29:51
+Collected by: Fathini
+Matric Number: 2025801536
+----------------------------------
+Parcel 1:
+Parcel Status: Claimed
+Tracking Number: 680078088310212
+Recipient Name: Fathini
+Recipient Email: 2025801536@student.uitm.edu.my
+Recipient Phone: 0123456789
+Delivery Address: Block Sutera, Bilik 230
+Delivery Date: 2026-06-20
+----------------------------------
+Total parcels collected: 1
+Total cost: RM2.00 (RM2.00 x 1 parcel(s))
+==================================

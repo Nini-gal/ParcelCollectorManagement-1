@@ -44,11 +44,6 @@ public class ParcelCentre{
         this.message = message;
     }
 
-    //method to assign staff to the parcel centre
-    public void assignStaff(String admin){
-        this.activeUser = admin;
-    }
-
     //method to sent notification to the user about the parcel status
     public void sendNotification(String recipientEmail, String message){
         //code to send email notification to the user

@@ -17,7 +17,6 @@ public class Main{
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to the Parcel Collector Management System!");
-        int count = 0;
 
         //central registry of parcels for camous centre
         ParcelCentre parcelCentre = new ParcelCentre("UITM Kuala Terengganu Parcel Centre", "Admin", "No new messages");
@@ -40,7 +39,7 @@ public class Main{
             System.out.println("Login successful! Welcome, " + username + ".");
             runAdminMenu(in, parcelCentre);
         }else{
-            runStudentFlow(in, student);
+            runStudentFlow(in, student, parcelCentre);
         }
 
         in.close();
@@ -57,9 +56,7 @@ public class Main{
             System.out.println("3. Update parcel status");
             System.out.println("4. Delete parcel");
             System.out.println("5. Send notification to student");
-            System.out.println("6. Assign staff to parcel centre");
-            System.out.println("7. Register new admin");
-            System.out.println("8. Exit");
+            System.out.println("6. Exit");
 
             System.out.println("Pick : ");
             int choice = in.nextInt();
@@ -84,13 +81,6 @@ public class Main{
                     sendNotification(in, parcelCentre);
                     break;
                 case 6:
-                    assignStaff(in, parcelCentre);
-                    //assign staff to the centre
-                    break;
-                case 7:
-                    registerNewAdmin(in);
-                    break;
-                case 8:
                     exit = true;
                     break;
                 default:
@@ -192,6 +182,7 @@ public class Main{
 
     //case 5 allows admin to update status of the parcel
     private static void sendNotification(Scanner in, ParcelCentre parcelCentre){
+        List<Parcel> unclaimed = new ArrayList<>();
         System.out.print("Enter tracking number of the parcel: ");
         long trackingNum = in.nextLong();
         in.nextLine();
@@ -201,40 +192,26 @@ public class Main{
             System.out.println("No parcel found with that tracking number.");
             return;
         }
- 
-        System.out.print("Enter message to send: ");
-        String message = in.nextLine();
- 
-        parcelCentre.sendNotification(parcel.getRecipientEmail(), message);
-    }
 
-    //case 6, admin able to assign a staff to the hub
-    private static void assignStaff(Scanner in, ParcelCentre parcelCentre){
-        System.out.print("Enter staff name to assign to this centre: ");
-        String staffName = in.nextLine();
-        parcelCentre.assignStaff(staffName);
-        System.out.println(staffName + " has been assigned to " + parcelCentre.getCentreName() + ".");
-    }
+        for(Parcel p : parcelCentre.getAllParcels()){
+            if(!parcel.getStatus().equalsIgnoreCase("Claimed")){
+                unclaimed.add(parcel);
+            }
+        }
 
-    //case 7 registering new staff into the admin
-    private static void registerNewAdmin(Scanner in){
-        System.out.print("Enter name: ");
-        String name = in.nextLine();
+        if(unclaimed.isEmpty()){
+            System.out.println("No unclaimed parcels. No Reminder to send.");
+            return;
+        }
  
-        System.out.print("Enter id: ");
-        String id = in.nextLine();
- 
-        System.out.print("Enter email: ");
-        String email = in.nextLine();
- 
-        System.out.print("Enter role: ");
-        String role = in.nextLine();
- 
-        System.out.print("Enter password: ");
-        String password = in.nextLine();
- 
-        Admin newAdmin = Admin.registerAdmin(name, id, email, role, password);
-        System.out.println("Admin registered successfully: " + newAdmin.getName());
+        System.out.print("Sending pickup remainders for "+ unclaimed.size() + " unclaimed parcel(s)...");
+        for(Parcel unclaimedParcel : unclaimed){
+            String message = "REMINDER: Your parcel (Tracking No: " + unclaimedParcel.getTrackingNum()
+                    + ") is ready for pickup at " + parcelCentre.getCentreName()
+                    + ". Please collect it as soon as possible.";
+            parcelCentre.sendNotification(unclaimedParcel.getRecipientEmail(), message);
+        }
+        System.out.println("Reminders sent to all unclaimed parcel recipients.");
     }
 
     //if none of the admins password runs, then student gets to use it
@@ -242,6 +219,7 @@ public class Main{
         System.out.print("Enter matric number: ");
         String matricNum = in.nextLine();
 
+        
         if(!matricNum.equals(student.getMatricNum())){
             System.out.println("Matric number not recognized.");
             return;
@@ -295,7 +273,7 @@ public class Main{
             }
 
             parcelsToClaim.add(parcel);
-            System.out.println("Parcel added. (" + parcelsToClaim.add(parcel) + " / " + Student.MAX_PARCELS_PER_PICKUP + ")");
+            System.out.println("Parcel added. (" + parcelsToClaim.size() + " / " + Student.MAX_PARCELS_PER_PICKUP + ")");
         }
 
         //what if the parcel to be claimed empty?
@@ -347,21 +325,22 @@ public class Main{
         sb.append("----------------------------------\n");
  
         int i = 1;
-        for (Parcel parcel : parcelsClaimed) {
+        for (Parcel parcel : parcelsToClaimed) {
             sb.append("Parcel ").append(i).append(":\n");
             sb.append(parcel.getParcelDetails()).append("\n");
             sb.append("----------------------------------\n");
             i++;
         }
  
-        sb.append("Total parcels collected: ").append(parcelsClaimed.size()).append("\n");
+        sb.append("Total parcels collected: ").append(parcelsToClaimed.size()).append("\n");
         sb.append(String.format("Total cost: RM%.2f (RM%.2f x %d parcel(s))%n",
-                totalCost, Student.CHARGE_PER_PARCEL, parcelsClaimed.size()));
+                totalCost, Student.CHARGE_PER_PARCEL, parcelsToClaimed.size()));
         sb.append("==================================");
  
         return sb.toString();
     }
 
+    //adding receipt for those paid the claimed parcel
     private static void saveReceiptToFile(Student student, String receipt){
         String timestampForFile = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         String fileName = "receipt_" + student.getMatricNum() + "_" + timestampForFile + ".txt";
