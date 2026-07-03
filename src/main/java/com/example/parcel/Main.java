@@ -22,9 +22,27 @@ public class Main{
         //demo student account with a parcel already linked to it
         //real system this would come from a database look up at login time
         long demoTrackingNum = 680078088310212L;
+        long demoTrackingNum1 = 225347071883677L;
+        long demoTrackingNum2 = 225347071883678L;
+        long demoTrackingNum3 = 225347071883679L;
+ 
+        Parcel studentParcel1 = new Parcel(demoTrackingNum1, "Fathini", "fathini@student.uitm.edu.my",
+                "0123456789", "Block Sutera, Bilik 230", "2026-06-20", "Registered");
+        Parcel studentParcel2 = new Parcel(demoTrackingNum2, "Fathini", "fathini@student.uitm.edu.my",
+                "0123456789", "Block Sutera, Bilik 230", "2026-06-21", "Registered");
+        Parcel studentParcel3 = new Parcel(demoTrackingNum3, "Fathini", "fathini@student.uitm.edu.my",
+                "0123456789", "Block Sutera, Bilik 230", "2026-06-22", "Registered");
+ 
+        parcelCentre.addParcel(studentParcel1,
+                "Parcel with tracking number " + demoTrackingNum1 + " has been added to the system.");
+        parcelCentre.addParcel(studentParcel2,
+                "Parcel with tracking number " + demoTrackingNum2 + " has been added to the system.");
+        parcelCentre.addParcel(studentParcel3,
+                "Parcel with tracking number " + demoTrackingNum3 + " has been added to the system.");
+ 
         Parcel studentParcel = new Parcel(demoTrackingNum, "Fathini", "2025801536@student.uitm.edu.my", "0123456789", "Block Sutera, Bilik 230", "2026-06-20", "Registered");
         Student student = new Student("Fathini", "S001", "2025801536@student.edu.my", 123456789,
-                "Block A, Room 230", "2025801536",demoTrackingNum , studentParcel, 0);
+                "Block A, Room 230", "2025801536", demoTrackingNum, studentParcel, 0);
         parcelCentre.addParcel(studentParcel, "Parcel with tracking number" + demoTrackingNum + "has been added to the system.");
 
         System.out.println("Please log in to the system.");
