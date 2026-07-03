@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.example.parcel.model.Admin;
 import com.example.parcel.model.Parcel;
 import com.example.parcel.model.ParcelCentre;
 import com.example.parcel.model.Student;
@@ -38,7 +37,7 @@ public class Main{
             System.out.println("Login successful! Welcome, " + username + ".");
             runAdminMenu(in, parcelCentre);
         }else{
-            runStudentFlow(in, student, parcelCentre);
+            runStudentFlow(in, student, parcelCentre, new ArrayList<>());
         }
 
         in.close();
@@ -214,65 +213,61 @@ public class Main{
     }
 
     //if none of the admins password runs, then student gets to use it
-    private static void runStudentFlow(Scanner in, Student student, ParcelCentre parcelCentre){
+    private static void runStudentFlow(Scanner in, Student student, ParcelCentre parcelCentre, List<Parcel> parcelsToClaim){
         System.out.print("Enter matric number: ");
         String matricNum = in.nextLine();
 
-
-        if(!matricNum.equals(student.getMatricNum())){
-            System.out.println("Matric number not recognized.");
-            return;
-        }
 
         //student's otp generated
         int otp = student.generateOTP();
         System.out.println("Your OTP is : " + otp);
 
-        //to get the list of parcels form of array
-        List<Parcel> parcelsToClaim = new ArrayList<>();
+        System.out.println("Enter tracking numbers to collect, one at a time.");
+        System.out.println("Type 'done' when finished (max " + Student.MAX_PARCELS_PER_PICKUP + " parcels per visit).");
 
-        System.out.println("Enter tracking number to collect, once every visit.");
-        System.out.println("Enter 'done' when finished (max " + Student.MAX_PARCELS_PER_PICKUP + " parcels per visit).");
-
-        while(parcelsToClaim.size() < Student.MAX_PARCELS_PER_PICKUP){
-            System.out.print("Enter tracking number (or 'done'): ");
+        while (parcelsToClaim.size() < Student.MAX_PARCELS_PER_PICKUP) {
+            System.out.print("Tracking number (or 'done'): ");
             String input = in.nextLine().trim();
 
-            if(input.equalsIgnoreCase("done")){
+            if (input.equalsIgnoreCase("done")) {
                 break;
             }
 
             long trackingNum;
-
-            //ensure the tracking number entered are valid in 15 digit format or not
-            try{
+            try {
                 trackingNum = Long.parseLong(input);
-            }catch(NumberFormatException e){
-                System.out.println("Invalid tracking number entered. Please try again.");
+            } catch (NumberFormatException e) {
+                System.out.println("That's not a valid tracking number. Try again.");
                 continue;
             }
 
-            //find the tracking number in parcel centre 
+            // Look up the real parcel from ParcelCentre — not a blank new Parcel()
             Parcel parcel = parcelCentre.findParcelByTracking(trackingNum);
-            if(parcel == null){
-                System.out.println("Not parcel found.");
+            if (parcel == null) {
+                System.out.println("No parcel found with that tracking number.");
+                continue;
+            }
+            if (parcel.getStatus().equalsIgnoreCase("Claimed")) {
+                System.out.println("That parcel has already been claimed.");
+                continue;
+            }
+            if (parcelsToClaim.contains(parcel)) {
+                System.out.println("You've already added that tracking number.");
                 continue;
             }
 
-            //to tell the student whether the parcel already claimed yet or not
-            if(parcel.getStatus().equalsIgnoreCase("Claimed")){
-                System.out.println("The parcel already claimed.");
-                continue;
-            }
+            // Show details so the student can confirm it's the right parcel
+            System.out.println("Parcel found:");
+            System.out.println(parcel.getParcelDetails());
+            System.out.print("Add this parcel to your pickup? (yes/no): ");
+            String confirm = in.nextLine().trim();
 
-            //to ensure no collision of same parcel over and over again
-            if(parcelsToClaim.contains(parcel)){
-                System.out.println("The parcel already added to the hub.");
-                continue;
+            if (confirm.equalsIgnoreCase("yes")) {
+                parcelsToClaim.add(parcel);
+                System.out.println("Added. (" + parcelsToClaim.size() + "/" + Student.MAX_PARCELS_PER_PICKUP + ")");
+            } else {
+                System.out.println("Parcel not added.");
             }
-
-            parcelsToClaim.add(parcel);
-            System.out.println("Parcel added. (" + parcelsToClaim.size() + " / " + Student.MAX_PARCELS_PER_PICKUP + ")");
         }
 
         //what if the parcel to be claimed empty?
