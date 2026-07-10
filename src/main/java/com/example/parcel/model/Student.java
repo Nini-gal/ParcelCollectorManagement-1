@@ -48,6 +48,13 @@ public class Student extends User{
         return otp == currentOTP;
     }
 
+    @Override
+    public boolean login(String username, String password) {
+        // Uses the same parameters as the User class
+        // You can parse the password string to int for the OTP check
+        return getMatricNum().equals(username) && String.valueOf(getCurrentOTP()).equals(password);
+    }
+
     //method to generate 4 digits otp
     public int generateOTP(){
         currentOTP = (int)(Math.random() * 9000) + 1000;

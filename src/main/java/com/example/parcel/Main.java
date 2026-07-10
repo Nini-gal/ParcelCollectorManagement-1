@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.example.parcel.model.Admin;
 import com.example.parcel.model.Parcel;
 import com.example.parcel.model.ParcelCentre;
 import com.example.parcel.model.Student;
+import com.example.parcel.model.User;
 
 public class Main{
     public static void main(String[] args){
@@ -48,17 +50,30 @@ public class Main{
         Student student = new Student("Fathini", "S001", "2025801536@student.edu.my", 123456789,
                 "Block A, Room 230", "2025801536", demoTrackingNum, studentParcel, 0);
 
+
         System.out.println("Please log in to the system.");
         System.out.print("Enter username: ");
         String username = in.nextLine();
         System.out.print("Enter password: ");
         String password = in.nextLine(); 
 
-        if (username.equals("admin") && password.equals("password")){
+        User currentUser;
+        if (username.equals("admin")) {
+            currentUser = new Admin("Admin", "admin", "admin@email.com", "password");
+        } else {
+            currentUser = student; // Your existing student object
+        }
+
+        if (currentUser.login(username, password)) {
             System.out.println("Login successful! Welcome, " + username + ".");
-            runAdminMenu(in, parcelCentre);
-        }else{
-            runStudentFlow(in, student, parcelCentre, new ArrayList<>());
+            // Now you can safely identify the type
+            if (currentUser instanceof Admin) {
+                runAdminMenu(in, parcelCentre);
+            } else {
+                runStudentFlow(in, (Student) currentUser, parcelCentre, new ArrayList<>());
+            }
+        } else {
+            System.out.println("Login failed. Please check your username and password.");
         }
 
         in.close();

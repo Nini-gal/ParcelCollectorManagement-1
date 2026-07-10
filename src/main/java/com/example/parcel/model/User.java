@@ -47,13 +47,10 @@ public class User{
         this.numPhone = numPhone;
     }
 
-    //method login is to authenticate user using email awnd identifier on the system
-    public boolean login(String email){
-        if(email != null && email.equals(email)){
-            return true;
-        }else{
-            return false;
-        }
+    //method login is to authenticate user
+    public boolean login(String username, String password) {
+        //just check if username matches the user's ID
+        return this.getID().equals(username);
     }
 
     //method to get full profile details similar toString
