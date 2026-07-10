@@ -1,5 +1,4 @@
 package com.example.parcel.model;
-
 public class Parcel{
     private String status;
     private long trackingNum;
@@ -10,7 +9,8 @@ public class Parcel{
     private String deliveryDate;
 
     //Constructor
-    public Parcel(long trackingNum, String recipientName, String recipientEmail, String recipientPhone, String deliveryAddress, String deliveryDate, String status){
+    public Parcel(long trackingNum, String recipientName, String recipientEmail, 
+        String recipientPhone, String deliveryAddress, String deliveryDate, String status){
         this.trackingNum = trackingNum;
         this.recipientName = recipientName;
         this.recipientEmail = recipientEmail;

@@ -1,6 +1,4 @@
 package com.example.parcel.model;
-
-
 public class Student extends User{
     //update, max parcel perpickup are 10 logically
     public static final int MAX_PARCELS_PER_PICKUP = 10;
@@ -11,7 +9,8 @@ public class Student extends User{
     private int currentOTP;
 
     //Constructor
-    public Student(String name, String id, String email, int numPhone, String campusAddress, String matricNum, long trackingNum, Parcel parcel, int currentOTP){
+    public Student(String name, String id, String email, int numPhone, String campusAddress,
+         String matricNum, long trackingNum, Parcel parcel, int currentOTP){
         super(name, id, email, numPhone);
         this.campusAddress = campusAddress;
         this.matricNum = matricNum;

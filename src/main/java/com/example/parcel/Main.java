@@ -18,7 +18,8 @@ public class Main{
         System.out.println("Welcome to the Parcel Collector Management System!");
 
         //central registry of parcels for camous centre
-        ParcelCentre parcelCentre = new ParcelCentre("UITM Kuala Terengganu Parcel Centre", "Admin", "No new messages");
+        ParcelCentre parcelCentre = new ParcelCentre("UITM Kuala Terengganu Parcel Centre",
+            "Admin", "No new messages");
         //demo student account with a parcel already linked to it
         //real system this would come from a database look up at login time
         long demoTrackingNum = 680078088310212L;
@@ -146,8 +147,10 @@ public class Main{
                                 
             String status = "Registered";
                                 
-            Parcel newParcel = parcelCentre.registerParcel(trackingNum, recipientName, recipientEmail, recipientPhone, deliveryAddress, deliveryDate, status);
-            parcelCentre.addParcel(newParcel, "Parcel with tracking number " + trackingNum + " has been added to the system.");
+            Parcel newParcel = parcelCentre.registerParcel(trackingNum, recipientName, recipientEmail, 
+                recipientPhone, deliveryAddress, deliveryDate, status);
+            parcelCentre.addParcel(newParcel, "Parcel with tracking number " + trackingNum +
+             " has been added to the system.");
                                 
             System.out.println("Parcel registered successfully.");
                             
@@ -299,7 +302,8 @@ public class Main{
 
         //what if the parcels reached limit?, display
         if(parcelsToClaim.size() == Student.MAX_PARCELS_PER_PICKUP){
-            System.out.println("Number of parcels reached the maximum of " + Student.MAX_PARCELS_PER_PICKUP + " parcels for the visit.");
+            System.out.println("Number of parcels reached the maximum of " + 
+            Student.MAX_PARCELS_PER_PICKUP + " parcels for the visit.");
 
         }
 

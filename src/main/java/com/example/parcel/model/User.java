@@ -1,5 +1,4 @@
 package com.example.parcel.model;
-
 public class User{
     private String name;
     private String id;

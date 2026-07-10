@@ -1,5 +1,4 @@
 package com.example.parcel.model;
-
 public class Admin extends User{
     private String role;
     private String password;
@@ -34,14 +33,17 @@ public class Admin extends User{
     }
 
     //method to authenticate admin login
+    @Override
     public boolean login(String username, String passwordAttempt){
         return getID().equals(username) && getPassword().equals(passwordAttempt);
     }
 
     //method to register new parcel to the system
-    public Parcel registerParcel(long trackingNum, String recipientName, String recipientEmail, String recipientPhone, String deliveryAddress, String deliveryDate, String status){
+    public Parcel registerParcel(long trackingNum, String recipientName, String recipientEmail,
+         String recipientPhone, String deliveryAddress, String deliveryDate, String status){
         //adding new parcel, save into database or data structure
-        return new Parcel(trackingNum, recipientName, recipientEmail, recipientPhone, deliveryAddress, deliveryDate, status);
+        return new Parcel(trackingNum, recipientName, recipientEmail, recipientPhone, 
+            deliveryAddress, deliveryDate, status);
     }
 
     //method to update parcel status

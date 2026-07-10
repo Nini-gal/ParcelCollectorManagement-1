@@ -53,8 +53,10 @@ public class ParcelCentre{
     }
 
     //method to register a new parcel by admin
-    public Parcel registerParcel(long trackingNum, String recipientName, String recipientEmail, String recipientPhone, String deliveryAddress, String deliveryDate, String status){
-        return new Parcel (trackingNum, recipientName, recipientEmail, recipientPhone, deliveryAddress, deliveryDate, status);
+    public Parcel registerParcel(long trackingNum, String recipientName, String recipientEmail,
+         String recipientPhone, String deliveryAddress, String deliveryDate, String status){
+        return new Parcel (trackingNum, recipientName, recipientEmail, recipientPhone,
+             deliveryAddress, deliveryDate, status);
     }
 
     //method to add parcel based on the details provided by the admin
