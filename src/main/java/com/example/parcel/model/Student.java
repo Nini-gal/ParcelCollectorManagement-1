@@ -52,7 +52,7 @@ public class Student extends User{
     public boolean login(String username, String password) {
         // Uses the same parameters as the User class
         // You can parse the password string to int for the OTP check
-        return getMatricNum().equals(username) && String.valueOf(getCurrentOTP()).equals(password);
+        return getName().equals(username) && String.valueOf(getMatricNum()).equals(password);
     }
 
     //method to generate 4 digits otp

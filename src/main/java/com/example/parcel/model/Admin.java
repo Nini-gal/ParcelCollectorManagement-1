@@ -9,7 +9,7 @@ public class Admin extends User{
         this.password = password;
     }
 
-    // Convenience constructor using a default userType (e.g., 0) for existing call sites
+    //Convenience constructor using a default userType (e.g., 0) for existing call sites
     public Admin(String name, String id, String email, String password){
         this(name, id, email, "Administrator", password);
     }
